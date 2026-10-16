@@ -1,0 +1,308 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grade Calculator</title>
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        /* Smooth transition for results */
+        #result-container {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden flex flex-col md:flex-row">
+        
+        <!-- Input Section -->
+        <div class="p-8 flex-1">
+            <div class="mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Grade Calculator</h1>
+                <p class="text-sm text-gray-500 mt-1">Enter your marks to calculate your final grade.</p>
+            </div>
+
+            <form id="grade-form" class="space-y-4">
+                <!-- Subject Rows Container -->
+                <div id="subjects-container" class="space-y-3">
+                    <!-- Default Subject 1 -->
+                    <div class="subject-row flex gap-3 items-center">
+                        <input type="text" placeholder="Subject 1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm" value="Mathematics">
+                        <input type="number" placeholder="Marks" class="w-24 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm marks-input" required min="0" max="100">
+                        <span class="text-gray-500 text-sm font-medium">/ 100</span>
+                    </div>
+                    <!-- Default Subject 2 -->
+                    <div class="subject-row flex gap-3 items-center">
+                        <input type="text" placeholder="Subject 2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm" value="Science">
+                        <input type="number" placeholder="Marks" class="w-24 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm marks-input" required min="0" max="100">
+                        <span class="text-gray-500 text-sm font-medium">/ 100</span>
+                    </div>
+                    <!-- Default Subject 3 -->
+                    <div class="subject-row flex gap-3 items-center">
+                        <input type="text" placeholder="Subject 3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm" value="English">
+                        <input type="number" placeholder="Marks" class="w-24 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm marks-input" required min="0" max="100">
+                        <span class="text-gray-500 text-sm font-medium">/ 100</span>
+                    </div>
+                    <!-- Default Subject 4 -->
+                    <div class="subject-row flex gap-3 items-center">
+                        <input type="text" placeholder="Subject 4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm" value="History">
+                        <input type="number" placeholder="Marks" class="w-24 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm marks-input" required min="0" max="100">
+                        <span class="text-gray-500 text-sm font-medium">/ 100</span>
+                    </div>
+                    <!-- Default Subject 5 -->
+                    <div class="subject-row flex gap-3 items-center">
+                        <input type="text" placeholder="Subject 5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm" value="Computer Science">
+                        <input type="number" placeholder="Marks" class="w-24 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm marks-input" required min="0" max="100">
+                        <span class="text-gray-500 text-sm font-medium">/ 100</span>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
+                    <button type="button" id="add-subject-btn" class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Add Subject
+                    </button>
+                    <button type="button" id="reset-btn" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">
+                        Clear All
+                    </button>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition-all active:transform active:scale-[0.98] mt-4">
+                    Calculate Result
+                </button>
+            </form>
+        </div>
+
+        <!-- Result Section -->
+        <div class="bg-gray-50 p-8 w-full md:w-2/5 flex flex-col items-center justify-center border-l border-gray-100 relative">
+            <div id="result-placeholder" class="text-center text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <p>Fill the form to see your results.</p>
+            </div>
+
+            <div id="result-content" class="hidden w-full text-center flex-col items-center justify-center space-y-6">
+                <!-- Grade Badge -->
+                <div id="grade-badge" class="w-24 h-24 rounded-full flex items-center justify-center text-4xl font-black text-white shadow-lg mx-auto transform scale-0 transition-transform duration-500">
+                    A
+                </div>
+                
+                <div class="space-y-4 w-full">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <p class="text-sm text-gray-500 font-medium uppercase tracking-wider mb-1">Total Marks</p>
+                        <p class="text-2xl font-bold text-gray-800"><span id="total-obtained">0</span> <span class="text-lg text-gray-400 font-normal">/ <span id="total-max">500</span></span></p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <p class="text-sm text-gray-500 font-medium uppercase tracking-wider mb-1">Percentage</p>
+                        <p class="text-3xl font-bold text-gray-800" id="percentage">0.00%</p>
+                    </div>
+
+                    <div id="remarks-container" class="p-3 rounded-lg text-sm font-medium">
+                        Excellent Work!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Box (Instead of alert) -->
+    <div id="message-box" class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-xl font-medium text-sm transition-all duration-300 opacity-0 translate-y-[-20px] pointer-events-none z-50">
+        Please enter valid marks between 0 and 100 for all subjects.
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('grade-form');
+            const subjectsContainer = document.getElementById('subjects-container');
+            const addSubjectBtn = document.getElementById('add-subject-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            
+            // Result elements
+            const resultPlaceholder = document.getElementById('result-placeholder');
+            const resultContent = document.getElementById('result-content');
+            const totalObtainedEl = document.getElementById('total-obtained');
+            const totalMaxEl = document.getElementById('total-max');
+            const percentageEl = document.getElementById('percentage');
+            const gradeBadge = document.getElementById('grade-badge');
+            const remarksContainer = document.getElementById('remarks-container');
+            const messageBox = document.getElementById('message-box');
+
+            let subjectCount = 5;
+
+            // Show temporary message instead of alert()
+            function showMessage(msg) {
+                messageBox.textContent = msg;
+                messageBox.classList.remove('opacity-0', 'translate-y-[-20px]');
+                messageBox.classList.add('opacity-100', 'translate-y-0');
+                
+                setTimeout(() => {
+                    messageBox.classList.remove('opacity-100', 'translate-y-0');
+                    messageBox.classList.add('opacity-0', 'translate-y-[-20px]');
+                }, 3000);
+            }
+
+            // Add new subject row dynamically
+            addSubjectBtn.addEventListener('click', () => {
+                subjectCount++;
+                const newRow = document.createElement('div');
+                newRow.className = 'subject-row flex gap-3 items-center opacity-0 transform translate-y-[-10px] transition-all duration-300';
+                newRow.innerHTML = `
+                    <input type="text" placeholder="Subject ${subjectCount}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm">
+                    <input type="number" placeholder="Marks" class="w-24 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm marks-input" required min="0" max="100">
+                    <button type="button" class="remove-btn text-red-500 hover:text-red-700 transition-colors p-1" title="Remove Subject">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                `;
+                subjectsContainer.appendChild(newRow);
+                
+                // Trigger animation
+                setTimeout(() => {
+                    newRow.classList.remove('opacity-0', 'translate-y-[-10px]');
+                }, 10);
+
+                // Add remove functionality
+                newRow.querySelector('.remove-btn').addEventListener('click', function() {
+                    newRow.classList.add('opacity-0', 'scale-95');
+                    setTimeout(() => newRow.remove(), 300);
+                });
+            });
+
+            // Reset Form
+            resetBtn.addEventListener('click', () => {
+                form.reset();
+                resultPlaceholder.classList.remove('hidden');
+                resultContent.classList.add('hidden');
+                resultContent.classList.remove('flex');
+                gradeBadge.classList.remove('scale-100');
+                gradeBadge.classList.add('scale-0');
+            });
+
+            // Calculate Logic
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const marksInputs = document.querySelectorAll('.marks-input');
+                let totalObtained = 0;
+                let isValid = true;
+                const totalMax = marksInputs.length * 100;
+
+                if (marksInputs.length === 0) {
+                    showMessage("Please add at least one subject.");
+                    return;
+                }
+
+                marksInputs.forEach(input => {
+                    const val = parseFloat(input.value);
+                    if (isNaN(val) || val < 0 || val > 100) {
+                        isValid = false;
+                        input.classList.add('border-red-500', 'ring-red-200');
+                    } else {
+                        input.classList.remove('border-red-500', 'ring-red-200');
+                        totalObtained += val;
+                    }
+                });
+
+                if (!isValid) {
+                    showMessage("Please ensure all marks are between 0 and 100.");
+                    return;
+                }
+
+                // Calculations
+                const percentage = (totalObtained / totalMax) * 100;
+                let grade = '';
+                let colorClass = '';
+                let remarks = '';
+                let remarksClass = '';
+
+                // Grading Logic
+                if (percentage >= 90) {
+                    grade = 'A+';
+                    colorClass = 'bg-green-500';
+                    remarks = 'Outstanding Performance!';
+                    remarksClass = 'bg-green-100 text-green-800';
+                } else if (percentage >= 80) {
+                    grade = 'A';
+                    colorClass = 'bg-emerald-400';
+                    remarks = 'Excellent Work!';
+                    remarksClass = 'bg-emerald-100 text-emerald-800';
+                } else if (percentage >= 70) {
+                    grade = 'B';
+                    colorClass = 'bg-blue-500';
+                    remarks = 'Good Job!';
+                    remarksClass = 'bg-blue-100 text-blue-800';
+                } else if (percentage >= 60) {
+                    grade = 'C';
+                    colorClass = 'bg-yellow-500';
+                    remarks = 'Fair, Room for Improvement.';
+                    remarksClass = 'bg-yellow-100 text-yellow-800';
+                } else if (percentage >= 50) {
+                    grade = 'D';
+                    colorClass = 'bg-orange-500';
+                    remarks = 'Needs Hard Work.';
+                    remarksClass = 'bg-orange-100 text-orange-800';
+                } else {
+                    grade = 'F';
+                    colorClass = 'bg-red-500';
+                    remarks = 'Failed. Try Again Next Time.';
+                    remarksClass = 'bg-red-100 text-red-800';
+                }
+
+                // Update UI
+                totalObtainedEl.textContent = totalObtained;
+                totalMaxEl.textContent = totalMax;
+                percentageEl.textContent = percentage.toFixed(2) + '%';
+                
+                // Update Badge
+                gradeBadge.className = `w-24 h-24 rounded-full flex items-center justify-center text-4xl font-black text-white shadow-lg mx-auto transform scale-0 transition-transform duration-500 ${colorClass}`;
+                gradeBadge.textContent = grade;
+
+                // Update Remarks
+                remarksContainer.className = `p-3 rounded-lg text-sm font-medium w-full text-center ${remarksClass}`;
+                remarksContainer.textContent = remarks;
+
+                // Switch Views
+                resultPlaceholder.classList.add('hidden');
+                resultContent.classList.remove('hidden');
+                resultContent.classList.add('flex');
+
+                // Animate Badge
+                setTimeout(() => {
+                    gradeBadge.classList.remove('scale-0');
+                    gradeBadge.classList.add('scale-100');
+                }, 50);
+            });
+        });
+    </script>
+</body>
+</html>
+```
